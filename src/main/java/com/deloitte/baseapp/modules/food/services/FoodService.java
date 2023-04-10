@@ -41,6 +41,11 @@ public class FoodService {
         return resp;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Food get(final Long id) throws ObjectNotFoundException {
         Optional<Food> optionalFood = foodRepositories.findById(id);
         if (optionalFood.isEmpty()) {

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Data
-public class UserResponse implements GenericEntity<UserResponse> {
+public class    UserResponse implements GenericEntity<UserResponse> {
     @NotBlank
     private Long userId;
     @NotBlank

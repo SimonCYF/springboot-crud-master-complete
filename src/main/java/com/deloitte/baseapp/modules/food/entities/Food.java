@@ -17,4 +17,7 @@ public class Food {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private Double price;
+
 }

@@ -5,4 +5,6 @@ import lombok.Data;
 @Data
 public class CreateFoodRequest {
     private String name;
+
+    private Double price;
 }

@@ -10,30 +10,34 @@ import java.io.Serializable;
 @Entity
 @Table
 @Data
-public class Drink implements Serializable, GenericEntity<Drink> {
+public class Drink{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     private String name;
 
-    @Override
-    public void update(Drink source) {
-        this.name = source.getName();
-    }
+    @NotBlank
+    private Double value;
 
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-
-    @Override
-    public Drink createNewInstance() {
-        Drink newInstance = new Drink();
-        newInstance.update(this);
-
-        return newInstance;
-    }
+//    @Override
+//    public void update(Drink source) {
+//        this.name = source.getName();
+//        this.price = source.getPrice();
+//    }
+//
+//    @Override
+//    public Long getId() {
+//        return this.id;
+//    }
+//
+//    @Override
+//    public Drink createNewInstance() {
+//        Drink newInstance = new Drink();
+//        newInstance.update(this);
+//
+//        return newInstance;
+//    }
 }
