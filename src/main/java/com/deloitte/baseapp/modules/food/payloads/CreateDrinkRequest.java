@@ -6,5 +6,5 @@ import lombok.Data;
 public class CreateDrinkRequest {
     private String name;
 
-    private Double price;
+    private Double value;
 }

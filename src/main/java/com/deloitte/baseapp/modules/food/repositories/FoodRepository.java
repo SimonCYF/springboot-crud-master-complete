@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface FoodRepositories extends JpaRepository<Food, Long> {
+public interface FoodRepository extends JpaRepository<Food, Long> {
 
     Page<Food> findAll(Pageable pageable);
 
