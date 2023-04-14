@@ -4,7 +4,7 @@ import com.deloitte.baseapp.commons.ObjectNotFoundException;
 import com.deloitte.baseapp.commons.PagingResult;
 import com.deloitte.baseapp.modules.food.entities.Food;
 import com.deloitte.baseapp.modules.food.payloads.CreateFoodRequest;
-import com.deloitte.baseapp.modules.food.repositories.FoodRepositories;
+import com.deloitte.baseapp.modules.food.repositories.FoodRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class FoodService {
 
     @Autowired
-    FoodRepositories foodRepositories;
+    FoodRepository foodRepositories;
 
     /**
      *
