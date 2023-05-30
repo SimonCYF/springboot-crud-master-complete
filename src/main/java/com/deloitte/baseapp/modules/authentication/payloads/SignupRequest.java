@@ -22,4 +22,15 @@ public class SignupRequest {
     @NotBlank
     private String password;
 
+    @NotBlank
+    private String address;
+
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String state;
+
+    private Integer postcode;
+
 }

@@ -3,6 +3,7 @@ package com.deloitte.baseapp.modules.account.entities;
 import com.deloitte.baseapp.commons.GenericEntity;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +51,47 @@ public class User implements GenericEntity<User> {
 
   @Lob
   private byte[] profilePic;
+
+  private Date createdDate;
+  private Date profileUpdatedDate;
+  private Date passwordUpdatedDate;
+
+  @PrePersist
+  private void prePersist() {
+    createdDate = new Date();
+    passwordUpdatedDate = new Date();
+  }
+
+  @PreUpdate
+  private void preUpdate() {
+    if (isProfileUpdated()) {
+      profileUpdatedDate = new Date();
+      //passwordUpdatedDate = null; // Reset passwordUpdatedDate if profile is updated
+    }
+
+    if (isPasswordUpdated()) {
+      passwordUpdatedDate = new Date();
+      //profileUpdatedDate = null; // Reset profileUpdatedDate if password is updated
+    }
+  }
+
+  private boolean isProfileUpdated() {
+    if(profileUpdatedDate == null){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  private boolean isPasswordUpdated() {
+    if(passwordUpdatedDate == null){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+
 
 
   @ManyToMany(fetch = FetchType.LAZY)

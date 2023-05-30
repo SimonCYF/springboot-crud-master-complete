@@ -5,6 +5,8 @@ import com.deloitte.baseapp.commons.MessageResponse;
 import com.deloitte.baseapp.modules.account.entities.User;
 import com.deloitte.baseapp.modules.authentication.exception.BadCredentialException;
 import com.deloitte.baseapp.modules.authentication.exception.EmailHasBeenUsedException;
+import com.deloitte.baseapp.modules.authentication.payloads.ResetPassword;
+import com.deloitte.baseapp.modules.authentication.payloads.ResetPasswordEmailCheck;
 import com.deloitte.baseapp.modules.authentication.payloads.SigninRequest;
 import com.deloitte.baseapp.modules.authentication.payloads.SignupRequest;
 import com.deloitte.baseapp.modules.authentication.services.AuthenticationService;
@@ -37,6 +39,31 @@ public class AuthenticationController {
             final JwtResponse jwt = authenticationService.signin(payload);
             return new MessageResponse<>(jwt);
         } catch (final BadCredentialException ex) {
+            return new MessageResponse<>(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/forgetpassemailcheck")
+    public MessageResponse<?> forgetPassword(@Valid @RequestBody ResetPasswordEmailCheck payload) {
+        try {
+
+            return new MessageResponse<>(authenticationService.resetPasswordEmailCheck(payload.getEmail()), "Proceeding To Next Page ");
+        } catch (Exception ex) {
+            return new MessageResponse<>(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/resetpass")
+    public MessageResponse<?> forgetPassword(@Valid @RequestBody ResetPassword payload) {
+        try {
+            boolean checkExitsByEmail = authenticationService.resetPasswordEmailCheck(payload.getEmail());
+
+            if(checkExitsByEmail == true){
+                return new MessageResponse<>(authenticationService.resetPassword(payload), "Proceeding To Login ");
+            }else{
+                return new MessageResponse<>(authenticationService.resetPassword(payload), "Error ");
+            }
+        } catch (Exception ex) {
             return new MessageResponse<>(ex.getMessage());
         }
     }

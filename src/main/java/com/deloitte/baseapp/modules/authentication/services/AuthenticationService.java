@@ -6,6 +6,7 @@ import com.deloitte.baseapp.modules.account.entities.User;
 import com.deloitte.baseapp.modules.account.repositories.UserRepository;
 import com.deloitte.baseapp.modules.authentication.exception.BadCredentialException;
 import com.deloitte.baseapp.modules.authentication.exception.EmailHasBeenUsedException;
+import com.deloitte.baseapp.modules.authentication.payloads.ResetPassword;
 import com.deloitte.baseapp.modules.authentication.payloads.SigninRequest;
 import com.deloitte.baseapp.modules.authentication.payloads.SignupRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -50,6 +52,11 @@ public class AuthenticationService {
         user.setUsername(payload.getUsername());
         user.setEmail(payload.getEmail());
         user.setPassword(encoder.encode(payload.getPassword()));
+        user.setAddress(payload.getAddress());
+        user.setCity(payload.getCity());
+        user.setState(payload.getState());
+        user.setPostcode(payload.getPostcode());
+        user.setCreatedDate(new Date());
 
         userRepository.save(user);
         log.info("User has been saved: " + user.getId());
@@ -75,4 +82,30 @@ public class AuthenticationService {
                 user.getEmail(), null);
     }
 
+    public Boolean resetPasswordEmailCheck(String payload){
+        Optional<User> exists = userRepository.findByEmail(payload);
+
+        System.out.println(exists);
+        if (exists.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public User resetPassword(ResetPassword payload){
+        Optional<User> userOptional  = userRepository.findByEmail(payload.getEmail());
+
+        if(userOptional .isPresent()){
+            User user = userOptional.get();
+            user.setPassword(encoder.encode(payload.getPassword()));
+            user.setPasswordUpdatedDate(new Date());
+            userRepository.save(user);
+            return user;
+        }else{
+            User user = new User();
+            return user;
+        }
+
+    }
 }

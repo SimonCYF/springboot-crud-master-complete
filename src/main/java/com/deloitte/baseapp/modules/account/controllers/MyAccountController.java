@@ -19,7 +19,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/my-account")
+@RequestMapping("/api/account")
 public class MyAccountController {
 
     @Autowired

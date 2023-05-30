@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -68,6 +69,7 @@ public class UserService extends GenericService<User> {
             user.setState(profileUpdate.getState());
             user.setCity(profileUpdate.getState());
             user.setPostcode(profileUpdate.getPostcode());
+            user.setProfileUpdatedDate(new Date());
 
             return userRepository.save(user);
         }
@@ -88,6 +90,7 @@ public class UserService extends GenericService<User> {
         }else{
             User user = optionalUser.get();
             user.setProfilePic(file.getBytes());
+            user.setProfileUpdatedDate(new Date());
             return userRepository.save(user);
         }
     }
@@ -100,6 +103,7 @@ public class UserService extends GenericService<User> {
             throw new UserNotFoundException();
         } else {
             User user = optionalUser.get();
+            user.setPasswordUpdatedDate(new Date());
             user.setPassword(encoder.encode(profilePasswordUpdate.getPassword()));
 
             return userRepository.save(user);
