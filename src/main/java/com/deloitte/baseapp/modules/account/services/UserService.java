@@ -4,11 +4,13 @@ import com.deloitte.baseapp.commons.GenericRepository;
 import com.deloitte.baseapp.commons.GenericService;
 import com.deloitte.baseapp.modules.account.entities.User;
 import com.deloitte.baseapp.modules.account.exceptions.UserNotFoundException;
+import com.deloitte.baseapp.modules.account.payload.ProfilePasswordUpdate;
 import com.deloitte.baseapp.modules.account.payload.ProfileUpdate;
 import com.deloitte.baseapp.modules.account.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,9 @@ public class UserService extends GenericService<User> {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     public UserService(GenericRepository<User> repository) {
         super(repository);
@@ -87,4 +92,19 @@ public class UserService extends GenericService<User> {
         }
     }
 
-}
+    public User updateProfilePassword(ProfilePasswordUpdate profilePasswordUpdate) throws UserNotFoundException {
+
+        Optional<User> optionalUser = userRepository.findById(profilePasswordUpdate.getId());
+
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException();
+        } else {
+            User user = optionalUser.get();
+            user.setPassword(encoder.encode(profilePasswordUpdate.getPassword()));
+
+            return userRepository.save(user);
+        }
+    }
+
+
+    }
